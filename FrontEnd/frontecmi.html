@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MantenAPP - Tecmilenio</title>
+
+    <style>
+        :root {
+            --primary: #009929;     /* Azul Tecmilenio */
+            --secondary: #06402B;   
+            --accent: #66cc00;      /* Verde Tecmilenio */
+            --bg: #f4f7f9;
+            --white: #ffffff;
+            --text: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            animation: fadeIn 0.5s ease-in-out;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilos del Header (Logo y Nombre) */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .app-name {
+            font-size: 2em;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0;
+            letter-spacing: -1px;
+        }
+        
+        .app-name span {
+            color: var(--accent);
+        }
+
+        h2 {
+            color: #555;
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        input[type="text"], 
+        input[type="email"],
+        input[type="password"],
+        input[type="file"], 
+        select, 
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[readonly] {
+            background-color: #f0f0f0;
+            color: #777;
+            cursor: not-allowed;
+            border-color: #ddd;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e7f3ff;
+        }
+
+        .btn-logout {
+            background: none;
+            border: none;
+            color: #777;
+            text-decoration: underline;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto 0;
+            font-size: 0.9em;
+        }
+
+        .text-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        .text-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #contenedor-folio {
+            padding: 30px 20px;
+            background-color: #f8fff0;
+            border: 2px dashed var(--accent);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        #numero-folio {
+            display: block;
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 15px 0;
+            letter-spacing: 2px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="auth-container" class="container">
+        
+        <div class="brand-header">
+            <img src="https://images.credly.com/images/b8e6d134-79fe-4f11-a50c-309463334760/large_blob.png" alt="Logo Tecmilenio" class="brand-logo">
+            <h1 class="app-name">Manten<span>APP</span></h1>
+        </div>
+
+        <h2 id="auth-title">Crear Cuenta</h2>
+        
+        <div id="register-fields">
+            <div class="form-group">
+                <label>Nombre(s)</label>
+                <input type="text" id="reg-nombre" placeholder="Tu nombre">
+            </div>
+            <div class="form-group">
+                <label>Apellidos</label>
+                <input type="text" id="reg-apellido" placeholder="Tus apellidos">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Correo Institucional</label>
+            <input type="email" id="auth-email" placeholder="a00000000@tecmilenio.mx">
+        </div>
+        
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" id="auth-password" placeholder="******">
+        </div>
+
+        <button class="btn-primary" id="auth-btn" onclick="manejarAuth()">Registrarse</button>
+
+        <div class="text-link">
+            <span id="auth-toggle-text">¿Ya tienes cuenta?</span>
+            <a onclick="toggleAuthMode()" id="auth-toggle-link">Inicia Sesión</a>
+        </div>
+    </div>
+
+    <div id="app-container" class="container hidden">
+        
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h3 style="margin:0; color:var(--primary)">MantenAPP</h3>
+        </div>
+
+        <div id="vista-formulario">
+            <form id="report-form">
+                
+                <div class="form-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="nombre" readonly style="background-color: #f0f0f0;">
+                </div>
+
+                <div class="form-group">
+                    <label>Matrícula</label>
+                    <input type="text" id="matricula" placeholder="Ej. 2901234" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Ubicación</label>
+                    <select id="ubicacion" required>
+                        <option value="">Selecciona área...</option>
+                        <option>Edificio A (Aulas)</option>
+                        <option>Edificio B (Servicios Escolares)</option>
+                        <option>Cafetería</option>
+                        <option>Gimnasio</option>
+                        <option>Estacionamiento</option>
+                        <option>Baños</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Evidencia (Foto) - Opcional</label>
+                    <input type="file" id="foto" accept="image/*" capture="environment">
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción del Problema</label>
+                    <textarea id="descripcion" placeholder="Describe la falla..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary">Enviar Reporte</button>
+            </form>
+        </div>
+
+        <div id="vista-exito" class="hidden">
+            <h2 style="color:var(--accent)">¡Reporte Enviado!</h2>
+            <div id="contenedor-folio">
+                <p>Tu folio de seguimiento es:</p>
+                <span id="numero-folio">---</span>
+                <p style="font-size:0.9em; color:#666">Guarda este número.</p>
+            </div>
+            
+            <button class="btn-secondary" onclick="volverAlInicio()">Volver al Inicio</button>
+        </div>
+
+        <button class="btn-logout" onclick="cerrarSesion()">Cerrar Sesión</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <script>
+        // --- CONFIGURACIÓN ---
+        const firebaseConfig = {
+            // apiKey: "TU_API_KEY",
+        };
+
+        let isLoginMode = false; // Empezamos en Registro
+        let auth, db;
+        let usuarioActual = { nombre: "", apellidos: "" };
+
+        try {
+            if (firebaseConfig.apiKey) {
+                firebase.initializeApp(firebaseConfig);
+                auth = firebase.auth();
+                db = firebase.firestore();
+            } else {
+                console.log("MODO PRUEBA: Firebase no configurado.");
+            }
+        } catch (e) { console.error(e); }
+
+        // --- AUTH ---
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            const title = document.getElementById('auth-title');
+            const btn = document.getElementById('auth-btn');
+            const toggleText = document.getElementById('auth-toggle-text');
+            const toggleLink = document.getElementById('auth-toggle-link');
+            const registerFields = document.getElementById('register-fields');
+
+            if (isLoginMode) {
+                // Modo Login
+                title.innerText = "Iniciar Sesión";
+                btn.innerText = "Entrar";
+                toggleText.innerText = "¿No tienes cuenta?";
+                toggleLink.innerText = "Regístrate aquí";
+                registerFields.classList.add('hidden');
+            } else {
+                // Modo Registro
+                title.innerText = "Crear Cuenta";
+                btn.innerText = "Registrarse";
+                toggleText.innerText = "¿Ya tienes cuenta?";
+                toggleLink.innerText = "Inicia Sesión";
+                registerFields.classList.remove('hidden');
+            }
+        }
+
+        async function manejarAuth() {
+            const email = document.getElementById('auth-email').value;
+            const pass = document.getElementById('auth-password').value;
+            const regNombre = document.getElementById('reg-nombre').value;
+            const regApellido = document.getElementById('reg-apellido').value;
+
+            if (!email || !pass) {
+                alert("Faltan correo o contraseña.");
+                return;
+            }
+            if (!isLoginMode && (!regNombre || !regApellido)) {
+                alert("Por favor ingresa tu Nombre y Apellidos.");
+                return;
+            }
+
+            // MODO PRUEBA
+            if (!auth) {
+                if (!isLoginMode) {
+                    usuarioActual.nombre = regNombre;
+                    usuarioActual.apellidos = regApellido;
+                    alert("Cuenta creada con éxito (Simulado)");
+                } else {
+                    if(usuarioActual.nombre === "") {
+                        usuarioActual.nombre = "Alumno";
+                        usuarioActual.apellidos = "Tecmilenio";
+                    }
+                    alert("Bienvenido de nuevo (Simulado)");
+                }
+                entrarALaApp();
+                return;
+            }
+
+            // MODO REAL
+            try {
+                if (isLoginMode) {
+                    await auth.signInWithEmailAndPassword(email, pass);
+                } else {
+                    const credencial = await auth.createUserWithEmailAndPassword(email, pass);
+                    await credencial.user.updateProfile({
+                        displayName: `${regNombre} ${regApellido}`
+                    });
+                    usuarioActual.nombre = regNombre;
+                    usuarioActual.apellidos = regApellido;
+                }
+                entrarALaApp();
+            } catch (error) {
+                alert("Error: " + error.message);
+            }
+        }
+
+        function entrarALaApp() {
+            document.getElementById('auth-container').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+
+            if(auth && auth.currentUser && auth.currentUser.displayName) {
+                document.getElementById('nombre').value = auth.currentUser.displayName;
+            } else {
+                document.getElementById('nombre').value = `${usuarioActual.nombre} ${usuarioActual.apellidos}`;
+            }
+        }
+
+        function cerrarSesion() {
+            if(auth) auth.signOut();
+            location.reload();
+        }
+
+        // --- REPORTES ---
+        document.getElementById('report-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btn = e.target.querySelector('button');
+            btn.innerText = "Enviando...";
+            btn.disabled = true;
+
+            await new Promise(r => setTimeout(r, 1000));
+
+            const folio = `TEC-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+            document.getElementById('numero-folio').innerText = folio;
+
+            document.getElementById('vista-formulario').classList.add('hidden');
+            document.getElementById('vista-exito').classList.remove('hidden');
+            
+            btn.innerText = "Enviar Reporte";
+            btn.disabled = false;
+        });
+
+        function volverAlInicio() {
+            const nombreGuardado = document.getElementById('nombre').value;
+            document.getElementById('report-form').reset();
+            document.getElementById('nombre').value = nombreGuardado;
+            
+            document.getElementById('vista-exito').classList.add('hidden');
+            document.getElementById('vista-formulario').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
