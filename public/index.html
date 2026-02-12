@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - TecmiSoluciona</title>
+
+<style>
+:root {
+    --primary: #00a32e; /* Verde Tecmilenio */
+    --secondary: #004a32;
+    --text-label: #555;
+    --border-color: #d1d1d1;
+    --bg: #ffffff;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.brand-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.brand-logo {
+    width: 140px;
+    margin-bottom: 10px;
+}
+
+.app-name {
+    font-size: 2.2em;
+    font-weight: 900;
+    color: var(--primary);
+    margin: 0;
+    letter-spacing: -1px;
+}
+
+.app-name span {
+    color: #82c341;
+}
+
+/* Estilos de los Labels */
+label {
+    display: block;
+    font-size: 14px;
+    color: var(--text-label);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #333;
+}
+
+input::placeholder {
+    color: #aaa;
+}
+
+input:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: var(--secondary);
+}
+
+.link {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+    color: #333;
+}
+
+.link a {
+    color: var(--primary);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.link a:hover {
+    text-decoration: underline;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="brand-header">
+        <img src="https://images.credly.com/images/b8e6d134-79fe-4f11-a50c-309463334760/large_blob.png" class="brand-logo" alt="Logo Tecmilenio">
+        <h1 class="app-name">Tecmi<span>Soluciona</span></h1>
+    </div>
+
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="correo">Correo Institucional</label>
+            <input type="email" id="correo" placeholder="a00000000@tecmilenio.mx" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" placeholder="******" required>
+        </div>
+
+        <button type="submit">Inicia Sesión</button>
+    </form>
+
+    <div class="link">
+        ¿No tienes cuenta? <a href="registro.html">Regístrate</a>
+    </div>
+
+</div>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    const datos = {
+        correo: document.getElementById("correo").value,
+        password: document.getElementById("password").value
+    };
+
+    try {
+        const respuesta = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(datos)
+        });
+
+        const resultado = await respuesta.json();
+        alert(resultado.mensaje);
+
+        if(respuesta.ok){
+            window.location.href = "principal.html";
+        }
+    } catch (error) {
+        console.error("Error al conectar con el servidor:", error);
+        alert("Hubo un error al intentar iniciar sesión.");
+    }
+});
+</script>
+<script>
+document.getElementById("formLogin").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const datos = {
+        correo: document.getElementById("correo").value,
+        password: document.getElementById("password").value
+    };
+
+    try {
+        const respuesta = await fetch("/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(datos)
+        });
+
+        const resultado = await respuesta.json();
+
+        if (respuesta.ok) {
+            alert(resultado.mensaje);
+            window.location.href = "principal.html";
+        } else {
+            alert(resultado.mensaje);
+        }
+
+    } catch (error) {
+        alert("Error al iniciar sesión");
+        console.error(error);
+    }
+});
+</script>
+ 
+
+</body>
+</html>

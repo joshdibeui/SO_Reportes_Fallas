@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporte de Mantenimiento - TecmiSoluciona</title>
+
+<style>
+:root {
+    --primary: #2e7d32; 
+    --accent: #4caf50;  
+    --bg-light: #e8f5e9; 
+    --border-color: #c8e6c9;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--bg-light);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 650px;
+}
+
+.banner {
+    background: var(--primary);
+    color: white;
+    padding: 15px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.banner h1 { margin: 0; font-size: 24px; }
+.banner p { margin: 5px 0 0 0; font-size: 13px; opacity: 0.9; }
+
+label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    color: #2e4a2e;
+    margin-bottom: 8px;
+    margin-top: 20px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+/* Zona de Carga */
+.upload-container {
+    border: 2px dashed #ccc;
+    background: #f9f9f9;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.btn-select-images {
+    background: var(--accent);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* --- ESTILOS DE PREVISUALIZACIÓN --- */
+.preview-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.preview-item {
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* Ratio 1:1 */
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.preview-item img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+
+.badge-images {
+    background: #ffa000;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 30px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="banner">
+        <h1>🛠️ Reporte de Mantenimiento</h1>
+        <p>Universidad Tecmilenio - Sistema de Gestión</p>
+    </div>
+
+    <form id="reporteForm">
+        
+        <label>📍 Área/Sector:</label>
+        <input type="text" name="area" placeholder="Ej: Almacén" required>
+
+        <label>⚠️ Tipo de Falla:</label>
+        <select name="tipo" required>
+            <option value="">-- Selecciona el tipo de falla --</option>
+            <option value="electrica">🔌 Falla Eléctrica</option>
+            <option value="agua">💧 Falla de Agua</option>
+            <option value="otro">📝 Otro</option>
+        </select>
+
+        <label>🔥 Prioridad:</label>
+        <select name="prioridad">
+            <option value="baja">🟢 Baja</option>
+            <option value="media" selected>🟡 Media</option>
+            <option value="alta">🟠 Alta</option>
+            <option value="critica">🔴 Crítica</option>
+        </select>
+
+        <label>📝 Descripción del problema:</label>
+        <textarea name="descripcion" rows="3" required></textarea>
+
+        <label>📅 Fecha:</label>
+        <input type="date" name="fecha" required>
+
+        <label>⏰ Hora:</label>
+        <input type="time" name="hora" required>
+
+        <label>📷 Evidencia Gráfica <span class="badge-images" id="imgCount">0/3 imágenes</span></label>
+        <div class="upload-container">
+            <p style="font-size: 12px; color: #666;">Máximo 3 imágenes (JPG, PNG)</p>
+            <button type="button" class="btn-select-images" onclick="document.getElementById('fileInput').click()">
+                📂 Seleccionar Imágenes
+            </button>
+            <input type="file" id="fileInput" name="imagenes" accept="image/*" multiple style="display: none;">
+            
+            <div class="preview-gallery" id="previewGallery"></div>
+        </div>
+
+        <button type="submit" class="btn-submit">📥 Enviar Reporte</button>
+
+    </form>
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const previewGallery = document.getElementById('previewGallery');
+    const imgCountBadge = document.getElementById('imgCount');
+
+    fileInput.addEventListener('change', function() {
+        const files = Array.from(this.files);
+        
+        // Limpiar galería previa
+        previewGallery.innerHTML = '';
+
+        if(files.length > 3) {
+            alert("⚠️ Solo puedes subir un máximo de 3 imágenes.");
+            this.value = "";
+            imgCountBadge.innerText = "0/3 imágenes";
+            return;
+        }
+
+        imgCountBadge.innerText = `${files.length}/3 imágenes`;
+
+        files.forEach(file => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.classList.add('preview-item');
+                    div.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                    previewGallery.appendChild(div);
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    document.getElementById("reporteForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert("✅ Reporte enviado con éxito.");
+    });
+</script>
+
+</body>
+</html>
