@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.secret_key = 'Sistema-secret-key-2025'  # Necesario para sessions
 
 #Conexion a la base de datos:
-DATABASE = '/home/hernansote/dbs/sys_reportes/Untitled'
+DATABASE = '/home/hernansote/dbs/sys-reportes/sys-reportes'
 
 def get_db():
     db = getattr(g, '_database', None)
