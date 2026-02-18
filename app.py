@@ -59,7 +59,10 @@ def registrodata():
         }
         return jsonify ({"message": "Usuario registrado", "usuario": new_registry}), 201
     except sqlite3.IntegrityError:
-        return jsonify({"error:" "El usuario ya existe"}), 409
+        return jsonify({"error": "El usuario ya existe"}), 409
+    finally:
+        cursor.close()
+        conn.close()
 
 @app.route("/logindata", methods=['POST'])
 def logindata():
