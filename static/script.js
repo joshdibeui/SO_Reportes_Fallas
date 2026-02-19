@@ -24,6 +24,7 @@ document.getElementById("registroForm").addEventListener("submit", async functio
         });
 
         const resultado = await respuesta.json();
+        alert(resultado.mensaje);
 
     } catch (error) {
         alert("Error al registrar usuario");

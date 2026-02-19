@@ -83,7 +83,6 @@ def logindata():
         return jsonify ({"error": "credenciales invalidas"}), 400
 
     
-
     
 
 #Inicializacion
