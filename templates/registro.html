@@ -132,13 +132,13 @@ button:hover {
 
     <form id="registroForm">
         <div class="form-group">
-            <label for="nombre">Nombre Completo</label>
-            <input type="text" id="nombre" placeholder="Tu nombre" required>
+            <label for="name">Nombre Completo</label>
+            <input type="text" id="name" placeholder="Tu nombre" required> <!--El id es lo que el script usara para identificar donde extraer la informacion del formulario-->
         </div>
 
         <div class="form-group">
-            <label for="correo">Correo Institucional</label>
-            <input type="email" id="correo" placeholder="a00000000@tecmilenio.mx" required>
+            <label for="email">Correo Institucional</label>
+            <input type="email" id="email" placeholder="a00000000@tecmilenio.mx" required>
         </div>
 
         <div class="form-group">
@@ -155,50 +155,8 @@ button:hover {
 
 </div>
 
-<script>
-document.getElementById("registroForm").addEventListener("submit", async function(e){
-    e.preventDefault();
 
-    const datos = {
-        nombre: document.getElementById("nombre").value,
-        correo: document.getElementById("correo").value,
-        password: document.getElementById("password").value
-    };
-
-    // Tu lógica de fetch se mantiene igual
-    console.log("Datos enviados:", datos);
-    alert("Registro procesado (Simulación)");
-});
-</script>
-
-<script>
-document.getElementById("formRegistro").addEventListener("submit", async function(e) {
-    e.preventDefault();
-
-    const datos = {
-        nombre: document.getElementById("nombre").value,
-        correo: document.getElementById("correo").value,
-        password: document.getElementById("password").value
-    };
-
-    try {
-        const respuesta = await fetch("/registro", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(datos)
-        });
-
-        const resultado = await respuesta.json();
-        alert(resultado.mensaje);
-
-    } catch (error) {
-        alert("Error al registrar usuario");
-        console.error(error);
-    }
-});
-</script>
-
+<script src="{{ url_for('static', filename='script.js') }}" defer ></script>    
 </body>
+
 </html>
