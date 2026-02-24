@@ -82,8 +82,49 @@ def logindata():
     else:
         return jsonify ({"error": "credenciales invalidas"}), 400
 
-    
-    
+#Ruta y conexion para el .json de los reportes que se envien desde el formulario en principal.html que permita usar las tareas en activas y crear nuevas tareas, ademas 
+#de poder conectar las paginas principal.html (para el envio y extraccion de informacion del formulario con un [POST]) y admin (para la visualizacion de la informacion[GET])
+#basado en una sesion de usuario activa. Los datos a extrear del formulario seran: area del problema, tipo de falla, prioridad, 
+#descripcion, fecha, hora y un maximo de 3 imagenes.
+
+
+@app.route("/reportes", methods=['POST'])
+def reportes():
+    data = request.get_json()
+    area = data.get("area")
+    tipo = data.get("tipo")
+    prioridad = data.get("prioridad")
+    descripcion = data.get("descripcion")
+    fecha = data.get("fecha")
+    hora = data.get("hora")
+    fotos = data.get("fotos")
+    estatus = "pendiente"
+    if not area or not tipo or not prioridad or not descripcion or not fecha or not hora:
+        return jsonify({"error": "Faltan datos requeridos"}), 400
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO reportes (area, tipo, prioridad, descripcion, fecha, hora, fotos, estatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (area, tipo, prioridad, descripcion, fecha, hora, fotos, estatus))
+    conn.commit()
+    new_id = cursor.lastrowid
+    new_reporte = {
+        "id": new_id,
+        "area": area,
+        "tipo": tipo,
+        "prioridad": prioridad,
+        "descripcion": descripcion,
+        "fecha": fecha,
+        "hora": hora,
+        "fotos": fotos,
+        "estatus": estatus
+    }
+    return jsonify({"message": "Reporte creado", "reporte": new_reporte}), 201
+
+
+@app.route("/reportes", methods=['GET'])
+def reportes():
+    conn = get_db()
+    reportes = conn.execute("SELECT * FROM reportes").fetchall()
+    return jsonify({"reportes": [dict(r) for r in reportes]})
 
 #Inicializacion
 if __name__ == '__main__':
